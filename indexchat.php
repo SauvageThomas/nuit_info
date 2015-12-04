@@ -102,7 +102,7 @@ var chat =  new Chat();
 
 </head>
 
-<body onload="setInterval('chat.update()', 1000)">
+<body onload="setInterval('chat.update()', 1000)" id="body2">
 
 
 
@@ -110,7 +110,7 @@ var chat =  new Chat();
 
 	<div id="page-wrap">
 
-		<h2>jQuery/PHP Chat</h2>
+		<h2>Chat instantané</h2>
 
 		<p id="name-area"></p>
 
