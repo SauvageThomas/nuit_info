@@ -24,7 +24,7 @@ class FilterTrackConsumer extends OauthPhirehose {
 		 */
 		$data = json_decode ( $status, true );
 		if (is_array ( $data ) && isset ( $data ['user'] ['screen_name'] )) {
-			echo "<p>";
+			echo "<li>";
 			$date = explode ( " ", $data ['created_at'] );
 			$heure = explode ( ":", $date [3] );
 			switch ($date [1]) {
@@ -83,9 +83,10 @@ class FilterTrackConsumer extends OauthPhirehose {
 			}
 			echo "</p><BR/>";
 			$this->tweet_count += 1;
+			echo "</li>";
 		}
 		if ($this->tweet_count >= 5) {
-			echo "</body></html>";
+			echo "</ul></body></html>";
 			exit ();
 		}
 	}
@@ -104,5 +105,6 @@ $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FIL
 $sc->setTrack ( array (
 		'nuitinfo' 
 ) );
+echo "<ul>";
 $sc->consume ();
 ?>
