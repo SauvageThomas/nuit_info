@@ -1,21 +1,22 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
-  <head>
-  <meta charset="utf-8">
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-  </head>
-  <body id="body1">
-    <div class="container-fluid">
+<head>
+<meta charset="utf-8">
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body id="body1">
+	<div class="container-fluid">
 
 
 
 		<!-- LOGO    SOMMAIRE-->
 		<div class="row">
 			<div class="col-lg-offset-3 col-lg-6">
-				 </Br></Br></Br>
+				</Br> </Br> </Br>
 				<div class="row">
-					<div class= "col-lg-offset-6 col-lg-6">
+					<div class="col-lg-offset-6 col-lg-6">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="index.php">Accueil</a></li>
 							<li><a href="#">Salons</a></li>
@@ -23,41 +24,30 @@
 						</ul>
 					</div>
 				</div>
-        <div class="row">
-          <form method="Post" action="search.php">
-					<div class="form-group">
-						<div class="input-group input-group-lg icon-addon addon-lg">
-							<input type="text" placeholder="Saisissez des mots-clés" name="recherche" id="schbox" class="form-control input-lg">
-							<i class="icon icon-search"></i>
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-inverse">Rechercher</button>
-							</span>
+				<div class="row">
+					<form method="Post" action="search.php">
+						<div class="form-group">
+							<div class="input-group input-group-lg icon-addon addon-lg">
+								<input type="text" placeholder="Saisissez des mots-clés"
+									name="recherche" id="schbox" class="form-control input-lg"> <i
+									class="icon icon-search"></i> <span class="input-group-btn">
+									<button type="submit" class="btn btn-inverse">Rechercher</button>
+								</span>
+							</div>
 						</div>
-					</div>
-        </form>
+					</form>
 				</div>
 				<div class="row">
-					<div class= "col-lg-offset-1 col-lg-10" id="blocnews">
-						<h2>LISTES DES SALONS</h2><br/><br/>
+					<div class="col-lg-offset-1 col-lg-10" id="blocnews">
+						<h2>LISTES DES SALONS</h2>
+						<br /> <br />
             <?php
-            require("connect.inc.php");
-            $req = $bdd->prepare('SELECT * FROM salons');
-            $req->execute();
-            while($donnees = $req->fetch()){
-            	$result[] = $donnees;
-            	echo 'boucle';
-            }
-            $req->closeCursor();
-            echo '<table>';
-            echo "<tr><th>Identifiant</th><th>Nom du salon</th></tr>";
-            foreach($result as $saloon) {
-            	echo "<tr>";
-            	echo "<td>".$saloon['id']."</td>";
-            	echo "<td>".$saloon['nom']."</td>";
-            	echo "</tr>";
-            }
-            echo '</table>';
-            ?>
+												require ("connect.inc.php");
+												$query = $bdd->query ( 'SELECT * FROM salon' );
+												while ( $line = $query->fetch () ) {
+													echo $line ['nom'];
+												}
+												?>
 					</div>
 				</div>
 			</div>
@@ -65,10 +55,10 @@
 				<?php include("indexchat.php"); ?>
 
 			</div>
-		 </div>
-
-
 		</div>
-		</body>
+
+
+	</div>
+</body>
 
 </html>
