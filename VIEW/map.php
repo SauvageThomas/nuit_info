@@ -35,8 +35,20 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class= "col-lg-offset-1 col-lg-10" id="blocnews">
-						INSERT MAP HERE
+					<div class= "col-lg-offset-1 col-lg-10" id="map">
+						<script type="text/javascript">
+							var map;
+							function initMap() {
+							  map = new google.maps.Map(document.getElementById('map'), {
+								center: {lat: 48.9021449, lng: 2.4699208},
+								zoom: 3
+							  });
+							}
+
+						</script>
+						<script async defer
+							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-huh3mxg37vBifkr-gf4fAbVi1Nwut5I&callback=initMap">
+						</script>
 					</div>
 				</div>
 			</div>
