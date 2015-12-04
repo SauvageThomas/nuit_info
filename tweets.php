@@ -63,23 +63,27 @@ class FilterTrackConsumer extends OauthPhirehose {
 			$date_r = $date [5] . "-" . $mois . "-" . $date [2];
 			
 			$text = $data ['text'];
-			$substr = explode ( " ", $text );
-			foreach ( $substr as $http ) {
-				if (strstr ( $http, "http" )) {
-					$link = "<a href=\"" . $http . "\">" . $http . "</a><BR/>";
-					$text = str_replace ( $http, $link, $text );
-				}
-			}
-			$localisation="";
+			/*
+			 * $substr = explode ( " ", $text ); foreach ( $substr as $http ) { if (strstr ( $http, "http" )) { $link = "<a href=\"" . $http . "\">" . $http . "</a><BR/>"; $text = str_replace ( $http, $link, $text ); } }
+			 */
+			$localisation = "";
 			if (! empty ( $data ['user'] ['location'] )) {
-				$localisation=$data ['user'] ['location'];
+				$localisation = $data ['user'] ['location'];
 			}
 			$this->tweet_count += 1;
-			$mots_cles = implode ( ", ", $this->getTrack () );
+			
+			$mots_cles="";
+			$substr = explode ( " ", $text );
+			foreach ( $substr as $word ) {
+				foreach($this->getTrack() as $motcle)
+					if ($word=="#".$motcle) {
+						$mots_cles=$word;
+				}
+			}
 			try {
 				require_once ('connect.inc.php');
 				$req = $bdd->prepare ( "INSERT into tweet(message, localisation, date, mots_cles) values (:message, :localisation, :date, :mots_cles);" );
-				$ok=$req->execute ( array (
+				$ok = $req->execute ( array (
 						'message' => $text,
 						'localisation' => $localisation,
 						'date' => $date_r,
@@ -90,7 +94,7 @@ class FilterTrackConsumer extends OauthPhirehose {
 			}
 		}
 		if ($this->tweet_count >= 10) {
-			exit;
+			exit ();
 		}
 	}
 }
@@ -107,7 +111,14 @@ define ( "OAUTH_SECRET", "sIFafoYoFchI8KF4i3QSOXPzvi4L63lvnv2HRTtnz8pQP" );
 $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER );
 
 $sc->setTrack ( array (
-		'attentat', 'catastrophe', 'désastre', 'alerte', 'secours', 'accident', 'rip', 'sos'  
+		'attentat',
+		'catastrophe',
+		'désastre',
+		'alerte',
+		'secours',
+		'accident',
+		'rip',
+		'sos' 
 ) );
 $sc->consume ();
 ?>
