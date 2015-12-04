@@ -13,6 +13,7 @@ require_once ('phirehose/lib/OauthPhirehose.php');
  */
 class FilterTrackConsumer extends OauthPhirehose {
 	private $tweet_count = 0;
+	
 	/**
 	 * Enqueue each status
 	 *
@@ -65,7 +66,9 @@ class FilterTrackConsumer extends OauthPhirehose {
 					$mois = "12";
 					break;
 			}
+			
 			echo $date [2] . "/" . $mois . "/" . $date [5] . " " . $heure [0] . "h" . $heure [1] . " ";
+			$date_r = $date [5] . "-" . $mois . "-" . $date [2];
 			echo $data ['user'] ['screen_name'] . ': ';
 			
 			$text = $data ['text'];
@@ -77,15 +80,29 @@ class FilterTrackConsumer extends OauthPhirehose {
 				}
 			}
 			echo $text;
-			
+			$localisation="";
 			if (! empty ( $data ['user'] ['location'] )) {
 				echo "<BR/>" . $data ['user'] ['location'];
+				$localisation=$data ['user'] ['location'];
 			}
 			echo "</p><BR/>";
 			$this->tweet_count += 1;
 			echo "</li>";
+			$mots_cles = implode ( ", ", $this->getTrack () );
+			try {
+				require_once ('connect.inc.php');
+				$req = $bdd->prepare ( "INSERT into tweet(message, localisation, date, mots_cles) values (:message, :localisation, :date, :mots_cles);" );
+				$ok=$req->execute ( array (
+						'message' => $text,
+						'localisation' => $localisation,
+						'date' => $date_r,
+						'mots_cles' => $mots_cles 
+				) );
+			} catch ( PDOException $e ) {
+				echo "<BR/>" . $e . "<BR/>";
+			}
 		}
-		if ($this->tweet_count >= 5) {
+		if ($this->tweet_count >= 1) {
 			echo "</ul></body></html>";
 			exit ();
 		}
@@ -102,6 +119,7 @@ define ( "OAUTH_SECRET", "sIFafoYoFchI8KF4i3QSOXPzvi4L63lvnv2HRTtnz8pQP" );
 
 // Start streaming
 $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER );
+
 $sc->setTrack ( array (
 		'nuitinfo' 
 ) );
