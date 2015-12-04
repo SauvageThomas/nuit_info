@@ -40,7 +40,7 @@
 				<div class="row">
 					<div class="col-lg-offset-1 col-lg-10" id="blocnews">
 						<h2>LISTES DES SALONS</h2>
-						<br /> <br />
+						<br />
             <?php
 												require ("connect.inc.php");
 												$query = $bdd->query ( 'SELECT * FROM salon' );
