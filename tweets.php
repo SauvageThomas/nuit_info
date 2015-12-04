@@ -107,7 +107,7 @@ define ( "OAUTH_SECRET", "sIFafoYoFchI8KF4i3QSOXPzvi4L63lvnv2HRTtnz8pQP" );
 $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER );
 
 $sc->setTrack ( array (
-		'nuitinfo' 
+		'attentat', 'catastrophe', 'désastre', 'alerte', 'secours', 'accident', 'rip', 'sos'  
 ) );
 $sc->consume ();
 ?>
