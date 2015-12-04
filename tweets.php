@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='utf-8' />
-</head>
-<body>
 <?php
 require_once ('phirehose/lib/Phirehose.php');
 require_once ('phirehose/lib/OauthPhirehose.php');
@@ -25,7 +19,6 @@ class FilterTrackConsumer extends OauthPhirehose {
 		 */
 		$data = json_decode ( $status, true );
 		if (is_array ( $data ) && isset ( $data ['user'] ['screen_name'] )) {
-			echo "<li>";
 			$date = explode ( " ", $data ['created_at'] );
 			$heure = explode ( ":", $date [3] );
 			switch ($date [1]) {
@@ -67,9 +60,7 @@ class FilterTrackConsumer extends OauthPhirehose {
 					break;
 			}
 			
-			echo $date [2] . "/" . $mois . "/" . $date [5] . " " . $heure [0] . "h" . $heure [1] . " ";
 			$date_r = $date [5] . "-" . $mois . "-" . $date [2];
-			echo $data ['user'] ['screen_name'] . ': ';
 			
 			$text = $data ['text'];
 			$substr = explode ( " ", $text );
@@ -79,15 +70,11 @@ class FilterTrackConsumer extends OauthPhirehose {
 					$text = str_replace ( $http, $link, $text );
 				}
 			}
-			echo $text;
 			$localisation="";
 			if (! empty ( $data ['user'] ['location'] )) {
-				echo "<BR/>" . $data ['user'] ['location'];
 				$localisation=$data ['user'] ['location'];
 			}
-			echo "</p><BR/>";
 			$this->tweet_count += 1;
-			echo "</li>";
 			$mots_cles = implode ( ", ", $this->getTrack () );
 			try {
 				require_once ('connect.inc.php');
@@ -102,9 +89,8 @@ class FilterTrackConsumer extends OauthPhirehose {
 				echo "<BR/>" . $e . "<BR/>";
 			}
 		}
-		if ($this->tweet_count >= 1) {
-			echo "</ul></body></html>";
-			exit ();
+		if ($this->tweet_count >= 10) {
+			exit;
 		}
 	}
 }
@@ -123,6 +109,5 @@ $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FIL
 $sc->setTrack ( array (
 		'nuitinfo' 
 ) );
-echo "<ul>";
 $sc->consume ();
 ?>
