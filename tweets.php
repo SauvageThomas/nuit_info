@@ -76,12 +76,12 @@ class FilterTrackConsumer extends OauthPhirehose {
 			$substr = explode ( " ", $text );
 			foreach ( $substr as $word ) {
 				foreach($this->getTrack() as $motcle)
-					if ($word=="#".$motcle) {
+					if ($word==$motcle) {
 						$mots_cles=$word;
 				}
 			}
 			try {
-				require_once ('connect.inc.php');
+				include ('connect.inc.php');
 				$req = $bdd->prepare ( "INSERT into tweet(message, localisation, date, mots_cles) values (:message, :localisation, :date, :mots_cles);" );
 				$ok = $req->execute ( array (
 						'message' => $text,
@@ -93,7 +93,7 @@ class FilterTrackConsumer extends OauthPhirehose {
 				echo "<BR/>" . $e . "<BR/>";
 			}
 		}
-		if ($this->tweet_count >= 10) {
+		if ($this->tweet_count >= 5) {
 			exit ();
 		}
 	}
@@ -111,14 +111,14 @@ define ( "OAUTH_SECRET", "sIFafoYoFchI8KF4i3QSOXPzvi4L63lvnv2HRTtnz8pQP" );
 $sc = new FilterTrackConsumer ( OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER );
 
 $sc->setTrack ( array (
-		'attentat',
-		'catastrophe',
-		'désastre',
-		'alerte',
-		'secours',
-		'accident',
-		'rip',
-		'sos' 
+		'#attentat',
+		'#catastrophe',
+		'#désastre',
+		'#alerte',
+		'#secours',
+		'#accident',
+		'#rip',
+		'#sos' 
 ) );
 $sc->consume ();
 ?>
