@@ -51,7 +51,7 @@ $query = $db->prepare ( "
 	SELECT message_id, message_user, message_time, message_text, account_id, account_login
 	FROM chat_messages
 	LEFT JOIN chat_accounts ON chat_accounts.account_id = chat_messages.message_user
-	WHERE message_time >= :time
+	
 	ORDER BY message_time ASC LIMIT 0,100
 " );
 $query->execute ( array (
